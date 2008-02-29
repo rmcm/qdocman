@@ -1,60 +1,21 @@
 #include <QSqlDatabase>
 #include "qmvdbconnect.h"
 
-qmvdbconnect::qmvdbconnect(QWidget *parent)
-    : QDialog(parent)
-{
-	// Setup the form
-	ui.setupUi(this);
-	
-	// get current db settings from qsettings
-	// and set the fields
-	settings = new QSettings();
-	settings->beginGroup("qmvdbconnect");
-	ui.hostEdit->setText(settings->value("host", "localhost").toString());
-	ui.databaseEdit->setText(settings->value("database", "qdocman").toString());
-	ui.userEdit->setText(settings->value("user", "").toString());
-	ui.passwordEdit->setText(settings->value("password", "").toString());
-	settings->endGroup();
+QmvDBConnect::QmvDBConnect(const char *name)
+    {
+    // TODO: can QSqlDatabase be inherited????
+    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", name);
+    // get current db settings from qsettings
+    // and set the fields
+    settings = new QSettings();
+    settings->beginGroup(name);
+    db.setHostName(settings->value("host", "localhost").toString());
+    db.setDatabaseName(settings->value("database", "qdocman").toString());
+    db.setUserName(settings->value("user", "").toString());
+    db.setPassword(settings->value("password", "").toString());
+    settings->endGroup();
 }
 
-qmvdbconnect::~qmvdbconnect()
-{
-
-}
-
-void qmvdbconnect::on_testButton_clicked() 
-{
-	ui.connectLabel->setText("Attempting connection ...");
-	
-	{
-		QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL",
-				"qmvdbconnect_test");
-		db.setHostName(ui.hostEdit->text());
-		db.setDatabaseName(ui.databaseEdit->text());
-		db.setUserName(ui.userEdit->text());
-		db.setPassword(ui.passwordEdit->text());
-		bool ok = db.open();
-		if (ok) {
-			ui.connectLabel->setForegroundRole(QPalette::Text);
-			ui.connectLabel->setText("Connection is ok");
-		} else {
-			ui.connectLabel->setForegroundRole(QPalette::Highlight);
-			ui.connectLabel->setText("<b>Connection failed</b>");
-		}
-		db.close();
-	}
-	QSqlDatabase::removeDatabase("qmvdbconnect_test");
-}
-void qmvdbconnect::on_buttonBox_accepted()
-{
-	// save the connection settings
-	settings->beginGroup("qmvdbconnect");
-	settings->setValue("host", ui.hostEdit->text());
-	settings->setValue("database", ui.databaseEdit->text());
-	settings->setValue("user", ui.userEdit->text());
-	settings->setValue("password", ui.passwordEdit->text());
-	settings->endGroup();
-
-	accept();
+QmvDBConnect::~QmvDBConnect() {
+    QSqlDatabase::removeDatabase("qmvdbconnect_test");
 }

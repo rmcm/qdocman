@@ -4,8 +4,10 @@ QT += core \
     gui \
     sql \
     network
-HEADERS += qmvdbconnect.h
+HEADERS += qmvdbconnect.h \
+	   qmvdbconnectconf.h
 SOURCES += main.cpp \
-    qmvdbconnect.cpp
+	   qmvdbconnect.cpp \
+	   qmvdbconnectconf.cpp
 FORMS += qmvdbconnect.ui
 RESOURCES += 

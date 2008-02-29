@@ -1,25 +1,21 @@
 #ifndef QMVDBCONNECT_H
 #define QMVDBCONNECT_H
 
+#include <QSqlDatabase>
 #include <QtGui/QDialog>
 #include <QSettings>
 #include "ui_qmvdbconnect.h"
 
-class qmvdbconnect : public QDialog
+class QmvDBConnect : QObject
 {
     Q_OBJECT
 
 public:
-    qmvdbconnect(QWidget *parent = 0);
-    ~qmvdbconnect();
+    QmvDBConnect(const char * name);
+    ~QmvDBConnect();
 
 private:
-	QSettings *settings;
-    Ui::qmvdbconnectClass ui;
-    
-private slots:
-	void on_testButton_clicked();
-	void on_buttonBox_accepted();
+        QSettings *settings;;
 };
 
 #endif // QMVDBCONNECT_H
