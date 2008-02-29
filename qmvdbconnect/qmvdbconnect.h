@@ -4,7 +4,6 @@
 #include <QSqlDatabase>
 #include <QtGui/QDialog>
 #include <QSettings>
-#include "ui_qmvdbconnect.h"
 
 class QmvDBConnect : QObject
 {

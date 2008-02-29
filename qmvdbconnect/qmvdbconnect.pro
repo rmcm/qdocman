@@ -9,5 +9,5 @@ HEADERS += qmvdbconnect.h \
 SOURCES += main.cpp \
 	   qmvdbconnect.cpp \
 	   qmvdbconnectconf.cpp
-FORMS += qmvdbconnect.ui
+FORMS += qmvdbconnectconf.ui
 RESOURCES += 
