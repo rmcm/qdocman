@@ -1,4 +1,4 @@
-TEMPLATE = app
+TEMPLATE = lib
 TARGET = qmvdbconnect
 QT += core \
     gui \
@@ -11,3 +11,5 @@ SOURCES += main.cpp \
 	   qmvdbconnectconf.cpp
 FORMS += qmvdbconnectconf.ui
 RESOURCES += 
+
+CONFIG += staticlib
