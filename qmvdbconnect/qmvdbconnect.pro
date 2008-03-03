@@ -13,3 +13,5 @@ FORMS += qmvdbconnectconf.ui
 RESOURCES += 
 
 CONFIG += staticlib
+CONFIG    += create_prl
+CONFIG    += link_prl
