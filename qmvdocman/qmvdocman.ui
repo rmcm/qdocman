@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>MainWindow</string>
+   <string>QDocMan - Document Management</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
@@ -132,6 +132,7 @@
     <addaction name="actionFax" />
     <addaction name="actionEmail" />
     <addaction name="separator" />
+    <addaction name="actionPreferences" />
     <addaction name="actionQuit" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
@@ -243,6 +244,11 @@
    </property>
    <property name="shortcut" >
     <string>F1</string>
+   </property>
+  </action>
+  <action name="actionPreferences" >
+   <property name="text" >
+    <string>Preferences</string>
    </property>
   </action>
  </widget>

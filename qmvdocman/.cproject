@@ -31,6 +31,8 @@
 </target>
 </buildTargets>
 </storageModule>
+<storageModule moduleId="scannerConfiguration"/>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
 <storageModule moduleId="org.eclipse.cdt.core.pathentry">
 <pathentry base-path="/usr/include" include="" kind="inc" path="" system="true"/>
 <pathentry base-path="/usr/include" include="QtCore" kind="inc" path="" system="true"/>
@@ -48,6 +50,9 @@
 <pathentry base-path="/usr/include" include="QtAssistant" kind="inc" path="" system="true"/>
 <pathentry base-path="/usr/include" include="QtOpenGL" kind="inc" path="" system="true"/>
 <pathentry base-path="/usr/include" include="QtUiTools" kind="inc" path="" system="true"/>
+<pathentry kind="src" path=""/>
+<pathentry kind="out" path=""/>
+<pathentry kind="prj" path="/qmvdbconnect"/>
 </storageModule>
 </cconfiguration>
 </storageModule>

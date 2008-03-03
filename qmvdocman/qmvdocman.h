@@ -14,6 +14,12 @@ public:
 
 private:
     Ui::qmvdocmanClass ui;
+    
+private slots:
+    void on_actionPrint_activated();
+    void on_actionFax_activated();
+    void on_actionEmail_activated();
+    void on_actionPreferences_activated();
 };
 
 #endif // QMVDOCMAN_H

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'qmvdocman.ui'
 **
-** Created: Sun Mar 2 20:51:01 2008
+** Created: Mon Mar 3 11:06:38 2008
 **      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -36,6 +36,7 @@ public:
     QAction *actionPrint;
     QAction *actionQuit;
     QAction *actionWhatsThis;
+    QAction *actionPreferences;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *twBatchTree;
@@ -80,6 +81,8 @@ public:
     actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
     actionWhatsThis = new QAction(qmvdocmanClass);
     actionWhatsThis->setObjectName(QString::fromUtf8("actionWhatsThis"));
+    actionPreferences = new QAction(qmvdocmanClass);
+    actionPreferences->setObjectName(QString::fromUtf8("actionPreferences"));
     centralwidget = new QWidget(qmvdocmanClass);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
     gridLayout = new QGridLayout(centralwidget);
@@ -183,6 +186,7 @@ public:
     menuFile->addAction(actionFax);
     menuFile->addAction(actionEmail);
     menuFile->addSeparator();
+    menuFile->addAction(actionPreferences);
     menuFile->addAction(actionQuit);
     menuHelp->addAction(actionAbout_QDocMan);
     menuHelp->addAction(actionWhatsThis);
@@ -204,7 +208,7 @@ public:
 
     void retranslateUi(QMainWindow *qmvdocmanClass)
     {
-    qmvdocmanClass->setWindowTitle(QApplication::translate("qmvdocmanClass", "MainWindow", 0, QApplication::UnicodeUTF8));
+    qmvdocmanClass->setWindowTitle(QApplication::translate("qmvdocmanClass", "QDocMan - Document Management", 0, QApplication::UnicodeUTF8));
     actionFax->setText(QApplication::translate("qmvdocmanClass", "&Fax", 0, QApplication::UnicodeUTF8));
     actionFax->setToolTip(QApplication::translate("qmvdocmanClass", "Fax the selected documents", 0, QApplication::UnicodeUTF8));
     actionFax->setStatusTip(QApplication::translate("qmvdocmanClass", "Fax the selected documents", 0, QApplication::UnicodeUTF8));
@@ -228,6 +232,7 @@ public:
     actionQuit->setShortcut(QApplication::translate("qmvdocmanClass", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
     actionWhatsThis->setText(QApplication::translate("qmvdocmanClass", "&Whats This?", 0, QApplication::UnicodeUTF8));
     actionWhatsThis->setShortcut(QApplication::translate("qmvdocmanClass", "F1", 0, QApplication::UnicodeUTF8));
+    actionPreferences->setText(QApplication::translate("qmvdocmanClass", "Preferences", 0, QApplication::UnicodeUTF8));
     labelPatientSearch->setText(QApplication::translate("qmvdocmanClass", "Enter Surname,Firstname,DOB", 0, QApplication::UnicodeUTF8));
     twBatchTree->setTabText(twBatchTree->indexOf(tabPatients), QApplication::translate("qmvdocmanClass", "Patients", 0, QApplication::UnicodeUTF8));
     twBatchTree->setTabToolTip(twBatchTree->indexOf(tabPatients), QApplication::translate("qmvdocmanClass", "Documents grouped by patients", 0, QApplication::UnicodeUTF8));

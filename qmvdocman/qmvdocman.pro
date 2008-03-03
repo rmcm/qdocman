@@ -8,3 +8,8 @@ SOURCES   += main.cpp \
     qmvdocman.cpp
 FORMS     += qmvdocman.ui    
 RESOURCES +=
+
+INCLUDEPATH += ../qmvdbconnect
+
+LIBS        += ../qmvdbconnect/libqmvdbconnect.a
+

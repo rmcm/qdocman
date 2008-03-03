@@ -3,6 +3,7 @@
 	<name>qmvdocman</name>
 	<comment></comment>
 	<projects>
+		<project>qmvdbconnect</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
