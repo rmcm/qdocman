@@ -2,3 +2,5 @@
 /Makefile.Debug
 /Makefile.Release
 /qmvdbconnect
+/libqmvdbconnect.so*
+/libqmvdbconnect.a
