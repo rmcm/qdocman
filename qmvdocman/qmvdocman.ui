@@ -87,11 +87,11 @@
     <item row="0" column="1" >
      <widget class="QTabWidget" name="tabViewBatches" >
       <property name="currentIndex" >
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="allTab" >
+      <widget class="QWidget" name="tabAssigned" >
        <attribute name="title" >
-        <string>All Documents</string>
+        <string>Assigned Documents</string>
        </attribute>
        <layout class="QGridLayout" >
         <item row="0" column="0" >
@@ -99,9 +99,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabText" >
+      <widget class="QWidget" name="tabToBeAssigned" >
        <attribute name="title" >
-        <string>Text Documents</string>
+        <string>To Be Assigned</string>
        </attribute>
        <layout class="QGridLayout" >
         <item row="0" column="0" >
@@ -163,6 +163,9 @@
    <addaction name="actionWhatsThis" />
   </widget>
   <action name="actionFax" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/devices/drive-removable-media.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Fax</string>
    </property>
@@ -180,6 +183,9 @@
    </property>
   </action>
   <action name="actionEmail" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/mail-message-new.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Email</string>
    </property>
@@ -205,6 +211,9 @@
    </property>
   </action>
   <action name="actionPrint" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/devices/printer.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Print</string>
    </property>
@@ -222,6 +231,9 @@
    </property>
   </action>
   <action name="actionQuit" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/media-record.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Quit</string>
    </property>
@@ -239,6 +251,9 @@
    </property>
   </action>
   <action name="actionWhatsThis" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/status/dialog-information.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Whats This?</string>
    </property>
@@ -247,12 +262,17 @@
    </property>
   </action>
   <action name="actionPreferences" >
+   <property name="icon" >
+    <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/document-properties.png</iconset>
+   </property>
    <property name="text" >
     <string>Preferences</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../qdocman.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>
