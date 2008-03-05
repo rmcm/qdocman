@@ -7,7 +7,7 @@ HEADERS   += qmvdocman.h
 SOURCES   += main.cpp \
     qmvdocman.cpp
 FORMS     += qmvdocman.ui    
-RESOURCES +=
+RESOURCES += ../qdocman.qrc
 
 INCLUDEPATH += ../qmvdbconnect
 
