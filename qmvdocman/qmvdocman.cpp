@@ -4,7 +4,7 @@
 qmvdocman::qmvdocman(QWidget *parent)
     : QMainWindow(parent)
 {
-	ui.setupUi(this);
+        ui.setupUi(this);
 }
 
 qmvdocman::~qmvdocman()
@@ -29,6 +29,6 @@ void qmvdocman::on_actionEmail_activated()
 void qmvdocman::on_actionPreferences_activated()
 {
     ui.statusbar->showMessage("Setting Preferences ...", 5000);
-    QmvDBConnectConf *w = new QmvDBConnectConf();
+    QmvDBConnectConf *w = new QmvDBConnectConf(0, QCoreApplication::applicationName().toLatin1());
     w->exec();
 }

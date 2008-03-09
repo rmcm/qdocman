@@ -2,8 +2,7 @@
 #include "qmvdbconnect.h"
 
 QmvDBConnect::QmvDBConnect(const char *name)
-    {
-    // TODO: can QSqlDatabase be inherited????
+{
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", name);
     // get current db settings from qsettings
     // and set the fields

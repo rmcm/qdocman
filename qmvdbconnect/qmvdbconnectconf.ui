@@ -9,26 +9,26 @@
     <x>0</x>
     <y>0</y>
     <width>288</width>
-    <height>237</height>
+    <height>350</height>
    </rect>
   </property>
   <property name="minimumSize" >
    <size>
     <width>288</width>
-    <height>237</height>
+    <height>350</height>
    </size>
   </property>
   <property name="maximumSize" >
    <size>
     <width>288</width>
-    <height>237</height>
+    <height>350</height>
    </size>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" >
-   <item row="0" column="0" colspan="2" >
+   <item row="0" column="0" colspan="3" >
     <widget class="QLabel" name="panelLabel" >
      <property name="font" >
       <font>
@@ -39,7 +39,7 @@
       </font>
      </property>
      <property name="text" >
-      <string>Configure Database Connection</string>
+      <string>Configure Database Connections</string>
      </property>
      <property name="textFormat" >
       <enum>Qt::RichText</enum>
@@ -49,7 +49,40 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
+   <item row="1" column="0" colspan="2" >
+    <widget class="QLabel" name="labelLabel" >
+     <property name="text" >
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QComboBox" name="labelList" >
+     <property name="editable" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="nameLabel" >
+     <property name="toolTip" >
+      <string>Database Name</string>
+     </property>
+     <property name="statusTip" >
+      <string>Database Name</string>
+     </property>
+     <property name="whatsThis" >
+      <string>The name of the database</string>
+     </property>
+     <property name="text" >
+      <string>Database</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" >
+    <widget class="QLineEdit" name="nameEdit" />
+   </item>
+   <item row="3" column="0" >
     <widget class="QLabel" name="hostLabel" >
      <property name="toolTip" >
       <string>Database Hostname</string>
@@ -65,29 +98,20 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
+   <item row="3" column="2" >
     <widget class="QLineEdit" name="hostEdit" />
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="databaseLabel" >
-     <property name="toolTip" >
-      <string>Database Name</string>
-     </property>
-     <property name="statusTip" >
-      <string>Database Name</string>
-     </property>
-     <property name="whatsThis" >
-      <string>The name of the database</string>
-     </property>
+   <item row="4" column="0" >
+    <widget class="QLabel" name="portLabel" >
      <property name="text" >
-      <string>Database</string>
+      <string>Port</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1" >
-    <widget class="QLineEdit" name="databaseEdit" />
+   <item row="4" column="2" >
+    <widget class="QLineEdit" name="portEdit" />
    </item>
-   <item row="3" column="0" >
+   <item row="5" column="0" >
     <widget class="QLabel" name="userLabel" >
      <property name="toolTip" >
       <string>User Name</string>
@@ -103,10 +127,10 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1" >
+   <item row="5" column="2" >
     <widget class="QLineEdit" name="userEdit" />
    </item>
-   <item row="4" column="0" >
+   <item row="6" column="0" >
     <widget class="QLabel" name="passwordLabel" >
      <property name="toolTip" >
       <string>User Password</string>
@@ -122,14 +146,33 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1" >
+   <item row="6" column="2" >
     <widget class="QLineEdit" name="passwordEdit" >
      <property name="echoMode" >
       <enum>QLineEdit::Password</enum>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" >
+   <item row="7" column="0" >
+    <widget class="QLabel" name="optionsLabel" >
+     <property name="toolTip" >
+      <string>Connection Options</string>
+     </property>
+     <property name="statusTip" >
+      <string>Connection Options</string>
+     </property>
+     <property name="whatsThis" >
+      <string>Additional connection options</string>
+     </property>
+     <property name="text" >
+      <string>Options</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2" >
+    <widget class="QLineEdit" name="optionsEdit" />
+   </item>
+   <item row="8" column="0" >
     <widget class="QPushButton" name="testButton" >
      <property name="whatsThis" >
       <string>Test the connection to the database</string>
@@ -139,7 +182,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1" >
+   <item row="8" column="1" colspan="2" >
     <widget class="QLabel" name="connectLabel" >
      <property name="toolTip" >
       <string>Connection Status</string>
@@ -158,35 +201,102 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" colspan="2" >
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+   <item row="9" column="0" colspan="3" >
+    <layout class="QHBoxLayout" >
+     <property name="spacing" >
+      <number>-1</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="addConnection" >
+       <property name="maximumSize" >
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="toolTip" >
+        <string>Add a new connection</string>
+       </property>
+       <property name="statusTip" >
+        <string>Add a new connection</string>
+       </property>
+       <property name="whatsThis" >
+        <string>Add a new connection</string>
+       </property>
+       <property name="text" >
+        <string/>
+       </property>
+       <property name="icon" >
+        <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/list-add.png</iconset>
+       </property>
+       <property name="shortcut" >
+        <string>Alt+Shift++</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="remConnection" >
+       <property name="maximumSize" >
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="toolTip" >
+        <string>Delete the current connection</string>
+       </property>
+       <property name="statusTip" >
+        <string>Delete the current connection</string>
+       </property>
+       <property name="whatsThis" >
+        <string>Delete the current connection</string>
+       </property>
+       <property name="text" >
+        <string/>
+       </property>
+       <property name="icon" >
+        <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/list-remove.png</iconset>
+       </property>
+       <property name="shortcut" >
+        <string>Alt+-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="10" column="1" colspan="2" >
+    <widget class="QDialogButtonBox" name="exitControls" >
+     <property name="toolTip" >
+      <string/>
+     </property>
+     <property name="statusTip" >
+      <string/>
+     </property>
+     <property name="whatsThis" >
+      <string/>
      </property>
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>qmvdbconnectClass</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>278</x>
-     <y>221</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>286</x>
-     <y>236</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <resources>
+  <include location="../qdocman.qrc" />
+ </resources>
+ <connections/>
 </ui>
