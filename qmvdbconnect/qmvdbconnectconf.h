@@ -33,7 +33,7 @@ private:
     void addConnection( QString );
     QSettings *settings;
     Ui::qmvdbconnectClass ui;
-    QString connection_name;
+    QString connection_label;
     QString db_prefix;
 
 private slots:
@@ -41,6 +41,7 @@ private slots:
     void on_exitControls_accepted();
     void on_exitControls_rejected();
     void on_labelList_activated();
+//    void on_labelList_editTextChanged(const QString &newtext);
     void on_addConnection_clicked();
     void on_remConnection_clicked();
 };

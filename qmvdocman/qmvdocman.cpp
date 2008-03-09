@@ -31,4 +31,5 @@ void qmvdocman::on_actionPreferences_activated()
     ui.statusbar->showMessage("Setting Preferences ...", 5000);
     QmvDBConnectConf *w = new QmvDBConnectConf(0, QCoreApplication::applicationName().toLatin1());
     w->exec();
+    delete w;
 }
