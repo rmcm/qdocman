@@ -1,11 +1,25 @@
 /*
-sed: can't read /home/source/templates/CopyLeft: No such file or directory
+ *
+ *   Copyright 2008 X=X Computer Software Trust
+ *                   Kangaroo Ground Australia 3097
+ *
+ *
+ *  This is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License published by
+ *  the Free Software Foundation; either version 2, or (at your option)
+ *  any later version.
+ *
+ *  This software is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
 
  */
+
 // TODO: Documentation - Class description (incl. methods)
 #include <QSqlDatabase>
 #include <QDebug>
-//#include <QPushButton>
 #include "qmvdbconnectconf.h"
 
 QmvDBConnectConf::QmvDBConnectConf(QWidget *parent, const char * conn_name) :
@@ -26,8 +40,17 @@ QmvDBConnectConf::QmvDBConnectConf(QWidget *parent, const char * conn_name) :
     //     qDebug() << pb->isDefault() << pb->autoDefault();
     // }
 
-    //    ui.testButton->setDefault(true);
-    ui.exitControls->button(QDialogButtonBox::Apply)->setDefault(true);
+    // We need to configure the dialogbuttons explicitly
+    ui.exitControls->clear();
+    pb_apply = ui.exitControls->addButton(QDialogButtonBox::Apply);
+    pb_apply->setText("&Apply");
+    pb_apply->setDefault(true);
+    pb_discard = ui.exitControls->addButton(QDialogButtonBox::Discard);
+    pb_discard->setText("&Discard");
+    pb_discard->setDefault(false);
+    pb_close = ui.exitControls->addButton(QDialogButtonBox::Close);
+    pb_close->setText("&Close");
+    pb_close->setDefault(false);
 
     // Use application name if no connetion name specified
     if (connection_label.isEmpty())

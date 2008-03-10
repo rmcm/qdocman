@@ -35,6 +35,7 @@ private:
     Ui::qmvdbconnectClass ui;
     QString connection_label;
     QString db_prefix;
+    QPushButton *pb_apply, *pb_discard, *pb_close;
 
 private slots:
     void on_testButton_clicked();

@@ -178,7 +178,7 @@
       <string>Test the connection to the database</string>
      </property>
      <property name="text" >
-      <string>Test</string>
+      <string>&amp;Test</string>
      </property>
     </widget>
    </item>
