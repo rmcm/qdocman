@@ -1,7 +1,6 @@
 #include "qmvdocman.h"
 
-#include <QtGui>
-#include <QApplication>
+#include <QtGui/QApplication>
 
 int main(int argc, char *argv[])
 {
