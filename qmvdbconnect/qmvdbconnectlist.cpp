@@ -87,6 +87,7 @@ int QmvDBConnectList::loadList()
     return count;
 }
 
+
 int QmvDBConnectList::saveList()
 {
     qDebug() << "QmvDBConnectList saveList";
@@ -95,7 +96,8 @@ int QmvDBConnectList::saveList()
     settings.beginGroup(settings_group);
     settings.beginWriteArray(settings_array);
 
-    for (int row = 0; row < rowCount(); row++ ) {
+    int count = rowCount();
+    for (int row = 0; row < count; row++ ) {
         settings.setArrayIndex(row);
         for (int col = DBLabel; col < DBAttCount; col++ )
             {
@@ -109,6 +111,7 @@ int QmvDBConnectList::saveList()
     settings.endArray();
     // TODO: save other database settings here
     settings.endGroup();
+    return count;
 }
 
 
