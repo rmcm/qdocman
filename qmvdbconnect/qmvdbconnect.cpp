@@ -1,4 +1,4 @@
-#include <QSqlDatabase>
+#include <QtSql/QSqlDatabase>
 #include "qmvdbconnect.h"
 
 QmvDBConnect::QmvDBConnect(const char *name)
