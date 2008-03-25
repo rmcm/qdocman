@@ -1,4 +1,4 @@
-/** qmvdbconnectlist.cpp ---
+/** qmvdbconnectmodel.h ---
 
  * Copyright (C) 2008 Rex McMaster
 
@@ -20,38 +20,40 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QDebug>
-#include <QtCore/QSettings>
-#include "qmvdbconnectlist.h"
+#ifndef QMVDBCONNECTMODEL_H
+#define QMVDBCONNECTMODEL_H 1
 
-QmvDBConnectList::QmvDBConnectList()
+#include <QtGui/QStandardItemModel>
+
+class QmvDBConnectModel : public QStandardItemModel
 {
-    qDebug() << "QmvDBConnectList Constructor";
-    connection_list = new QmvDBConnectModel();
-    ui.setupUi(this);
-    ui.treeView->setModel(connection_list);
-}
 
-QmvDBConnectList::~QmvDBConnectList()
-{
-    qDebug() << "QmvDBConnectList Destructor";
-}
+    Q_OBJECT
 
-void QmvDBConnectList::on_pbAdd_clicked()
-{
-    qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
-    connection_list->addConnection();
-}
-void QmvDBConnectList::on_pbDelete_clicked()
-{
-}
-void QmvDBConnectList::on_pbEdit_clicked()
-{
-}
+public:
+    QmvDBConnectModel();
+    ~QmvDBConnectModel();
+    enum dbConnectAttribute {
+        DBConnected = 0,
+        DBLabel,
+        DBName,
+        DBHost,
+        DBPort,
+        DBUser,
+        DBPassword,
+        DBOptions,
+        DBAttCount
+    };
+    int loadModel();
+    int saveModel();
+    void addConnection();
+    void deleteConnection( int row = -1);
+    bool testConnection(int row);
 
+private:
+    QString settings_group, settings_array;
+    QStringList dbAttTags;
+    QStringList dbAttDefs;
+};
 
-
-
-
-
-
+#endif // QMVDBCONNECTMODEL_H

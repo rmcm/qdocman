@@ -7,3 +7,6 @@ Makefile*
 .cproject
 .project
 .emacs.*
+nul
+TAGS
+*_flymake*

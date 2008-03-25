@@ -13,7 +13,8 @@ SOURCES += main.cpp \
 	   qmvdbconnectmodel.cpp \
 	   qmvdbconnectlist.cpp \
 	   qmvdbconnectconf.cpp
-FORMS += qmvdbconnectconf.ui
+FORMS += qmvdbconnectlist.ui \
+	 qmvdbconnectconf.ui
 RESOURCES += 
 
 CONFIG += staticlib

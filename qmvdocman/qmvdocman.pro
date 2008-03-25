@@ -29,7 +29,7 @@ SOURCES   += main.cpp \
 FORMS     += qmvdocman.ui    
 RESOURCES += ../qdocman.qrc
 
-INCLUDEPATH += ../qmvdbconnect
+INCLUDEPATH += 
 
 LIBS        += ../qmvdbconnect/libqmvdbconnect.a
 

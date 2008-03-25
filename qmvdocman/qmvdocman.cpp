@@ -21,8 +21,8 @@
 #include <QtGui/QDirModel>
 #include <QtGui/QStandardItemModel>
 #include "qmvdocman.h"
-#include "qmvdbconnectconf.h"
-#include "qmvdbconnectlist.h"
+#include "../qmvdbconnect/qmvdbconnectlist.h"
+#include "../qmvdbconnect/qmvdbconnectmodel.h"
 
 qmvdocman::qmvdocman(QWidget *parent)
     : QMainWindow(parent)
@@ -45,7 +45,6 @@ qmvdocman::qmvdocman(QWidget *parent)
     parentItem->insertColumns(1,2);
     parentItem->child(1,0)->setCheckable(true);
     parentItem->child(2,0)->setDragEnabled(true);
-    ui.treeAllDocumentsView->setModel(new QmvDBConnectList());
 }
 
 qmvdocman::~qmvdocman()
@@ -71,7 +70,8 @@ void qmvdocman::on_actionEmail_activated()
 void qmvdocman::on_actionPreferences_activated()
 {
     ui.statusbar->showMessage("Setting Preferences ...", 5000);
-    QmvDBConnectConf *w = new QmvDBConnectConf(0, QCoreApplication::applicationName().toLatin1());
+    QString appname = QCoreApplication::applicationName().toLatin1();
+    QmvDBConnectList *w = new QmvDBConnectList();
     w->exec();
     delete w;
 }
