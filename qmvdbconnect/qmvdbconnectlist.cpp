@@ -22,14 +22,19 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
+#include <QtGui/QMessageBox>
+
 #include "qmvdbconnectlist.h"
+#include "qmvdbconnectconf.h"
 
 QmvDBConnectList::QmvDBConnectList()
 {
     qDebug() << "QmvDBConnectList Constructor";
-    connection_list = new QmvDBConnectModel();
+    connection_model = new QmvDBConnectModel();
+    QItemSelectionModel *selection_model = new QItemSelectionModel(connection_model);
     ui.setupUi(this);
-    ui.treeView->setModel(connection_list);
+    ui.treeView->setModel(connection_model);
+    ui.treeView->setSelectionModel(selection_model);
 }
 
 QmvDBConnectList::~QmvDBConnectList()
@@ -40,13 +45,44 @@ QmvDBConnectList::~QmvDBConnectList()
 void QmvDBConnectList::on_pbAdd_clicked()
 {
     qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
-    connection_list->addConnection();
+    connection_model->addConnection();
 }
 void QmvDBConnectList::on_pbDelete_clicked()
 {
+    qDebug() << "QmvDBConnectList::on_pbDelete_clicked()";
+    if (QMessageBox::warning(0, "Confirm Deletion",
+                             tr("Are you sure you want to delete this row ?"),
+                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        connection_model->deleteConnection(selectedRow());
+        connection_model->saveModel();
+    }
 }
 void QmvDBConnectList::on_pbEdit_clicked()
 {
+    qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    int row = selectedRow();
+    QmvDBConnectModel::DBConnectionPrefs prefs = connection_model->connectionPrefs(row);
+    QmvDBConnectConf *editor = new QmvDBConnectConf(this, prefs);
+    if (editor->exec() == QDialog::Accepted)
+        {
+            connection_model->setConnectionPrefs(row, editor->getPreferences());
+            connection_model->saveModel();
+        }
+    delete editor;
+}
+
+int QmvDBConnectList::selectedRow() const
+{
+    qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    QModelIndexList selected  = ui.treeView->selectionModel()->selectedRows();
+    if (selected.count() < 1) {
+        QMessageBox::warning(0, "Nothing selected",
+                             tr("No row has been selected<BR> ... please select a row to edit"),
+                             QMessageBox::Ok,0);
+        return -1;
+    }
+    qDebug() << "rows selected = " << selected.first().row();
+    return selected.first().row();
 }
 
 

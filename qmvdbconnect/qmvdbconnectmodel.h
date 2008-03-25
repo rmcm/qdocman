@@ -33,9 +33,9 @@ class QmvDBConnectModel : public QStandardItemModel
 public:
     QmvDBConnectModel();
     ~QmvDBConnectModel();
+    typedef QStringList DBConnectionPrefs;
     enum dbConnectAttribute {
-        DBConnected = 0,
-        DBLabel,
+        DBLabel = 0,
         DBName,
         DBHost,
         DBPort,
@@ -46,14 +46,18 @@ public:
     };
     int loadModel();
     int saveModel();
+    DBConnectionPrefs connectionPrefs( int row );
+    void setConnectionPrefs(int row, DBConnectionPrefs prefs);
     void addConnection();
     void deleteConnection( int row = -1);
     bool testConnection(int row);
 
 private:
     QString settings_group, settings_array;
-    QStringList dbAttTags;
-    QStringList dbAttDefs;
+    DBConnectionPrefs dbAttTags;
+    DBConnectionPrefs dbAttDefs;
+    DBConnectionPrefs dbAttVals;
+    QIcon available, unavailable;
 };
 
 #endif // QMVDBCONNECTMODEL_H

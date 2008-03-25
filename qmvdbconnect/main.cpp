@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setOrganizationName("compsoft");
     QCoreApplication::setOrganizationDomain("compsoft.com.au");
     QCoreApplication::setApplicationName("qdocman");
-    QmvDBConnectConf *w = new QmvDBConnectConf();
+    QmvDBConnectConf *w = new QmvDBConnectConf(0, QStringList());
 
     // TODO: define and parse arguments
     w->show();

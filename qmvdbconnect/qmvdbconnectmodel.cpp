@@ -27,13 +27,14 @@
 
 QmvDBConnectModel::QmvDBConnectModel()
     : settings_group("databases"),
-      settings_array("db")
+      settings_array("db"),
+      available(":/icons/tango-icon-theme/32x32/status/network-transmit-receive.png"),
+      unavailable(":/icons/tango-icon-theme/32x32/status/network-offline.png")
 {
     qDebug() << "QmvDBConnectModel Constructor";
 
-    // This must match enum dbConnectAttribute
-    dbAttTags = (QStringList()
-                 << "Accessible"
+    // These must match enum dbConnectAttribute
+    dbAttTags = (QStringList() // Tags/labels
                  << "Label"
                  << "Name"
                  << "Host"
@@ -41,8 +42,7 @@ QmvDBConnectModel::QmvDBConnectModel()
                  << "User"
                  << "Password"
                  << "Options");
-    dbAttDefs = (QStringList()
-                 << ""
+    dbAttDefs = (QStringList() // defaults
                  << ""
                  << ""
                  << "localhost"
@@ -70,29 +70,27 @@ int QmvDBConnectModel::loadModel()
     int count = settings.beginReadArray(settings_array);
     qDebug("status=%d count=%d", settings.status(), count);
     QList<QStandardItem *> db;
-    QIcon available  = QIcon(":/icons/tango-icon-theme/32x32/status/network-transmit-receive.png");
-    QIcon unavailable =  QIcon(":/icons/tango-icon-theme/32x32/status/network-offline.png");
 
-    for ( int i = 0; i < count; i++ ) {
+    for ( int row = 0; row < count; row++ ) {
         while (!db.isEmpty())
             db.takeFirst();
 
-        settings.setArrayIndex(i);
-        QStandardItem *db_status = new QStandardItem(unavailable, "");
-        db_status->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled); //read-only
-        db << db_status;
+        settings.setArrayIndex(row);
         for (int col = DBLabel; col < DBAttCount; col++ ) {
             QString value = settings.value(dbAttTags.at(col), dbAttDefs.at(col)).toString();
             QStandardItem *db_item = new QStandardItem(value);
             // list is read-only
             db_item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             db << db_item;
+            qDebug() << "Adding " << db_item;
         }
         parentItem->appendRow(db);
-        qDebug() << i << db.at(DBHost)->text() << db.at(DBName)->text();
+        qDebug() << row << db.at(DBHost)->text() << db.at(DBName)->text();
         // check connection
-        if (testConnection(i))
-                db_status->setIcon(available);
+        if (testConnection(row))
+            db.at(DBLabel)->setIcon(available);
+        else
+            db.at(DBLabel)->setIcon(unavailable);
     }
     settings.endArray();
     // TODO: load other database settings here
@@ -129,6 +127,34 @@ int QmvDBConnectModel::saveModel()
     return count;
 }
 
+QmvDBConnectModel::DBConnectionPrefs QmvDBConnectModel::connectionPrefs( int row )
+{
+    dbAttVals.clear();
+    if (row >= 0 && row < rowCount()) {
+        for (int col = DBLabel; col < DBAttCount; col++)
+            {
+                dbAttVals << item(row, col)->text();
+            }
+    }
+    return dbAttVals;
+}
+
+void QmvDBConnectModel::setConnectionPrefs( int row, DBConnectionPrefs prefs)
+{
+    qDebug() << "QmvDBConnectModel::setConnectionPrefs" << prefs;
+    if (row >= 0 && row < rowCount()) {
+        dbAttVals << item(row, DBLabel)->text();
+        dbAttVals << item(row, DBName)->text();
+        for (int col = DBLabel; col < DBAttCount; col++) {
+            item(row, col)->setText(prefs.at(col));
+        }
+        if (testConnection(row))
+            item(row, DBLabel)->setIcon(available);
+        else
+            item(row, DBLabel)->setIcon(unavailable);
+    }
+}
+
 void QmvDBConnectModel::addConnection()
 {
     qDebug() << "QmvDBConnectModel::addConnection()";
@@ -142,8 +168,9 @@ void QmvDBConnectModel::addConnection()
 
 void QmvDBConnectModel::deleteConnection(int row)
 {
-    if (row < 0)
-        return;
+    qDebug() << "QmvDBConnectModel::deleteConnection() row=" << row;
+    if (row >= 0 && row < rowCount())
+        takeRow(row);
 }
 
 bool QmvDBConnectModel::testConnection(int row)
