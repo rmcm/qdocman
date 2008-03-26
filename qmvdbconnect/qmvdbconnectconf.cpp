@@ -27,7 +27,7 @@ QmvDBConnectConf::QmvDBConnectConf(QWidget *parent, QmvDBConnectModel::DBConnect
     QDialog(parent),
     connect_prefs(prefs) {
 
-    qDebug() << "QmvDBConnectConf constructor";
+    // qDebug() << "QmvDBConnectConf constructor";
     // Setup the form
     ui.setupUi(this);
     // We need to configure the dialogbuttons explicitly
@@ -42,7 +42,7 @@ QmvDBConnectConf::QmvDBConnectConf(QWidget *parent, QmvDBConnectModel::DBConnect
     // pb_discard->setEnabled(false);
 
     // TODO: set editable data
-    qDebug() << "QmvDBConnectConf:: prefs.count() " << prefs.count();
+    // qDebug() << "QmvDBConnectConf:: prefs.count() " << prefs.count();
     ui.labelEdit->setText(connect_prefs.at(QmvDBConnectModel::DBLabel));
     ui.nameEdit->setText(connect_prefs.at(QmvDBConnectModel::DBName));
     ui.hostEdit->setText(connect_prefs.at(QmvDBConnectModel::DBHost));
@@ -51,7 +51,7 @@ QmvDBConnectConf::QmvDBConnectConf(QWidget *parent, QmvDBConnectModel::DBConnect
     ui.passwordEdit->setText(connect_prefs.at(QmvDBConnectModel::DBPassword));
     ui.optionsEdit->setText(connect_prefs.at(QmvDBConnectModel::DBOptions));
 
-    qDebug() << "loadConnectionSettings::" << ui.labelEdit->text();
+    // qDebug() << "loadConnectionSettings::" << ui.labelEdit->text();
 }
 
 QmvDBConnectConf::~QmvDBConnectConf() {
@@ -60,7 +60,7 @@ QmvDBConnectConf::~QmvDBConnectConf() {
 
 // Test the connection and report status
 void QmvDBConnectConf::on_testButton_clicked() {
-    qDebug() << "on_testButton_clicked";
+    // qDebug() << "on_testButton_clicked";
     ui.connectLabel->setText("Attempting connection ...");
 
     // Create a dummy connection to test provided DB preferences
@@ -87,10 +87,10 @@ void QmvDBConnectConf::on_testButton_clicked() {
 
 // Save and close
 void QmvDBConnectConf::on_exitControls_clicked(QAbstractButton * button) {
-    qDebug() << "on_exitControls_clicked";
-    qDebug() << " >> " << button->text();
-    qDebug() << " >> " << ui.exitControls->buttonRole(button);
-    qDebug() << " >> " << ui.exitControls->standardButton(button);
+    // qDebug() << "on_exitControls_clicked";
+    // qDebug() << " >> " << button->text();
+    // qDebug() << " >> " << ui.exitControls->buttonRole(button);
+    // qDebug() << " >> " << ui.exitControls->standardButton(button);
     ui.exitControls->standardButton(button);
 
     switch(ui.exitControls->standardButton(button))

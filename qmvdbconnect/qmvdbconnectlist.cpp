@@ -29,7 +29,7 @@
 
 QmvDBConnectList::QmvDBConnectList()
 {
-    qDebug() << "QmvDBConnectList Constructor";
+    // qDebug() << "QmvDBConnectList Constructor";
     connection_model = new QmvDBConnectModel();
     QItemSelectionModel *selection_model = new QItemSelectionModel(connection_model);
     ui.setupUi(this);
@@ -39,17 +39,17 @@ QmvDBConnectList::QmvDBConnectList()
 
 QmvDBConnectList::~QmvDBConnectList()
 {
-    qDebug() << "QmvDBConnectList Destructor";
+    // qDebug() << "QmvDBConnectList Destructor";
 }
 
 void QmvDBConnectList::on_pbAdd_clicked()
 {
-    qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
+    // qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
     connection_model->addConnection();
 }
 void QmvDBConnectList::on_pbDelete_clicked()
 {
-    qDebug() << "QmvDBConnectList::on_pbDelete_clicked()";
+    // qDebug() << "QmvDBConnectList::on_pbDelete_clicked()";
     if (QMessageBox::warning(0, "Confirm Deletion",
                              tr("Are you sure you want to delete this row ?"),
                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
@@ -59,7 +59,7 @@ void QmvDBConnectList::on_pbDelete_clicked()
 }
 void QmvDBConnectList::on_pbEdit_clicked()
 {
-    qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    // qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
     int row = selectedRow();
     QmvDBConnectModel::DBConnectionPrefs prefs = connection_model->connectionPrefs(row);
     QmvDBConnectConf *editor = new QmvDBConnectConf(this, prefs);
@@ -73,7 +73,7 @@ void QmvDBConnectList::on_pbEdit_clicked()
 
 int QmvDBConnectList::selectedRow() const
 {
-    qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    // qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
     QModelIndexList selected  = ui.treeView->selectionModel()->selectedRows();
     if (selected.count() < 1) {
         QMessageBox::warning(0, "Nothing selected",
@@ -81,7 +81,7 @@ int QmvDBConnectList::selectedRow() const
                              QMessageBox::Ok,0);
         return -1;
     }
-    qDebug() << "rows selected = " << selected.first().row();
+    // qDebug() << "rows selected = " << selected.first().row();
     return selected.first().row();
 }
 

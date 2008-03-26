@@ -31,44 +31,27 @@ QmvDBConnectModel::QmvDBConnectModel()
       available(":/icons/tango-icon-theme/32x32/status/network-transmit-receive.png"),
       unavailable(":/icons/tango-icon-theme/32x32/status/network-offline.png")
 {
-    qDebug() << "QmvDBConnectModel Constructor";
+    // qDebug() << "QmvDBConnectModel Constructor";
 
-    // These must match enum dbConnectAttribute
-    dbAttTags = (QStringList() // Tags/labels
-                 << "Label"
-                 << "Name"
-                 << "Host"
-                 << "Port"
-                 << "User"
-                 << "Password"
-                 << "Options");
-    dbAttDefs = (QStringList() // defaults
-                 << ""
-                 << ""
-                 << "localhost"
-                 << "5432"
-                 << ""
-                 << ""
-                 << "");
-
-    setHorizontalHeaderLabels(dbAttTags);
+    setHorizontalHeaderLabels(dbAttTags());
     loadModel();
 }
 
 QmvDBConnectModel::~QmvDBConnectModel()
 {
-    qDebug() << "QmvDBConnectModel Destructor";
-    // TODO: clear items ??
+    // qDebug() << "QmvDBConnectModel Destructor";
+    for (int row = 0; row < rowCount(); row++)
+        deleteConnection(row);
 }
 
 int QmvDBConnectModel::loadModel()
 {
-    qDebug() << "QmvDBConnectModel loadList";
+    // qDebug() << "QmvDBConnectModel loadList";
     QStandardItem *parentItem = invisibleRootItem();
     QSettings settings;
     settings.beginGroup(settings_group);
     int count = settings.beginReadArray(settings_array);
-    qDebug("status=%d count=%d", settings.status(), count);
+    // qDebug("status=%d count=%d", settings.status(), count);
     QList<QStandardItem *> db;
 
     for ( int row = 0; row < count; row++ ) {
@@ -77,15 +60,15 @@ int QmvDBConnectModel::loadModel()
 
         settings.setArrayIndex(row);
         for (int col = DBLabel; col < DBAttCount; col++ ) {
-            QString value = settings.value(dbAttTags.at(col), dbAttDefs.at(col)).toString();
+            QString value = settings.value(dbAttTags().at(col), dbAttDefs().at(col)).toString();
             QStandardItem *db_item = new QStandardItem(value);
             // list is read-only
             db_item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             db << db_item;
-            qDebug() << "Adding " << db_item;
+            // qDebug() << "Adding " << db_item;
         }
         parentItem->appendRow(db);
-        qDebug() << row << db.at(DBHost)->text() << db.at(DBName)->text();
+        // qDebug() << row << db.at(DBHost)->text() << db.at(DBName)->text();
         // check connection
         if (testConnection(row))
             db.at(DBLabel)->setIcon(available);
@@ -95,7 +78,7 @@ int QmvDBConnectModel::loadModel()
     settings.endArray();
     // TODO: load other database settings here
     settings.endGroup();
-    qDebug() << " >> loaded " << count << " rows. Model is " << rowCount() << "/" << columnCount();
+    // qDebug() << " >> loaded " << count << " rows. Model is " << rowCount() << "/" << columnCount();
 
     return count;
 }
@@ -103,7 +86,7 @@ int QmvDBConnectModel::loadModel()
 
 int QmvDBConnectModel::saveModel()
 {
-    qDebug() << "QmvDBConnectModel saveList";
+    // qDebug() << "QmvDBConnectModel saveList";
 
     QSettings settings;
     settings.beginGroup(settings_group);
@@ -114,11 +97,11 @@ int QmvDBConnectModel::saveModel()
         settings.setArrayIndex(row);
         for (int col = DBLabel; col < DBAttCount; col++ )
             {
-                qDebug() << "  >> " << row << "/" << col;
+                // qDebug() << "  >> " << row << "/" << col;
                 if (!item(row, col))
                     continue;
-                settings.setValue(dbAttTags.at(col), item(row, col)->text());
-                qDebug() << "saveList::" << item(row, col)->text();
+                settings.setValue(dbAttTags().at(col), item(row, col)->text());
+                // qDebug() << "saveList::" << item(row, col)->text();
             }
     }
     settings.endArray();
@@ -141,10 +124,8 @@ QmvDBConnectModel::DBConnectionPrefs QmvDBConnectModel::connectionPrefs( int row
 
 void QmvDBConnectModel::setConnectionPrefs( int row, DBConnectionPrefs prefs)
 {
-    qDebug() << "QmvDBConnectModel::setConnectionPrefs" << prefs;
+    // qDebug() << "QmvDBConnectModel::setConnectionPrefs" << prefs;
     if (row >= 0 && row < rowCount()) {
-        dbAttVals << item(row, DBLabel)->text();
-        dbAttVals << item(row, DBName)->text();
         for (int col = DBLabel; col < DBAttCount; col++) {
             item(row, col)->setText(prefs.at(col));
         }
@@ -157,10 +138,10 @@ void QmvDBConnectModel::setConnectionPrefs( int row, DBConnectionPrefs prefs)
 
 void QmvDBConnectModel::addConnection()
 {
-    qDebug() << "QmvDBConnectModel::addConnection()";
+    // qDebug() << "QmvDBConnectModel::addConnection()";
     QList<QStandardItem *> db;
     for (int col = DBLabel; col < DBAttCount; col++ ) {
-        db << new QStandardItem(dbAttDefs.at(col));
+        db << new QStandardItem(dbAttDefs().at(col));
     }
     invisibleRootItem()->appendRow(db);
     saveModel();
@@ -168,9 +149,13 @@ void QmvDBConnectModel::addConnection()
 
 void QmvDBConnectModel::deleteConnection(int row)
 {
-    qDebug() << "QmvDBConnectModel::deleteConnection() row=" << row;
-    if (row >= 0 && row < rowCount())
-        takeRow(row);
+    // qDebug() << "QmvDBConnectModel::deleteConnection() row=" << row;
+    if (row >= 0 && row < rowCount()) {
+        QList<QStandardItem *> items = takeRow(row);
+        // delete the items (takeRow() only relinquishes item ownership
+        while (!items.isEmpty())
+            delete items.takeFirst();
+    }
 }
 
 bool QmvDBConnectModel::testConnection(int row)
@@ -190,9 +175,9 @@ bool QmvDBConnectModel::testConnection(int row)
                 db.setPassword(item(row,DBPassword)->text());
                 ok = db.open();
                 db.close();
-                qDebug() << "testConnection status " << ok;
+                // qDebug() << "testConnection status " << ok;
             } else {
-                qDebug() << "testConnection failed - item(s) missing";
+                // qDebug() << "testConnection failed - item(s) missing";
             }
     }
 

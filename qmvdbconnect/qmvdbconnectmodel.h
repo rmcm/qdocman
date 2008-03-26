@@ -44,6 +44,27 @@ public:
         DBOptions,
         DBAttCount
     };
+    static DBConnectionPrefs dbAttTags() {
+        return DBConnectionPrefs()
+            << "Label"
+            << "Name"
+            << "Host"
+            << "Port"
+            << "User"
+            << "Password"
+            << "Options";
+    };
+    static DBConnectionPrefs dbAttDefs() {
+        return DBConnectionPrefs()
+            << ""
+            << ""
+            << "localhost"
+            << "5432"
+            << ""
+            << ""
+            << "";
+    };
+
     int loadModel();
     int saveModel();
     DBConnectionPrefs connectionPrefs( int row );
@@ -54,8 +75,6 @@ public:
 
 private:
     QString settings_group, settings_array;
-    DBConnectionPrefs dbAttTags;
-    DBConnectionPrefs dbAttDefs;
     DBConnectionPrefs dbAttVals;
     QIcon available, unavailable;
 };
