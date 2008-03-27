@@ -22,7 +22,6 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
-#include <QtSql/QSqlDatabase>
 #include "qmvdbconnectmodel.h"
 
 QmvDBConnectModel::QmvDBConnectModel()
@@ -67,6 +66,9 @@ int QmvDBConnectModel::loadModel()
             db << db_item;
             // qDebug() << "Adding " << db_item;
         }
+        // Label must be set
+        if (db.at(DBLabel)->text().isEmpty())
+            db.at(DBLabel)->setText(QString("Connect-%1").arg(row));
         parentItem->appendRow(db);
         // qDebug() << row << db.at(DBHost)->text() << db.at(DBName)->text();
         // check connection
@@ -185,3 +187,26 @@ bool QmvDBConnectModel::testConnection(int row)
     return ok;
 }
 
+QSqlDatabase QmvDBConnectModel::dbConnection(int row)
+{
+    // Invalid row
+    if (row < 0 || row >= rowCount())
+        return QSqlDatabase::QSqlDatabase();
+
+    QString dblabel = item(row, DBLabel)->text();
+    // create if not detected
+    if (!QSqlDatabase::contains(dblabel))
+        QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", dblabel);
+    // open and return
+    return QSqlDatabase::database(dblabel);
+}
+
+QSqlDatabase QmvDBConnectModel::dbConnection(const QString dbval, dbConnectAttribute att)
+{
+    for (int row = 0; row <= rowCount(); row++) {
+        if (dbval.compare(item(row, att)->text()))
+            return dbConnection(row);
+    }
+    // Return invalid DB
+    return QSqlDatabase::QSqlDatabase();
+}

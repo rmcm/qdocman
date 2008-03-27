@@ -24,6 +24,7 @@
 #define QMVDBCONNECTMODEL_H 1
 
 #include <QtGui/QStandardItemModel>
+#include <QtSql/QSqlDatabase>
 
 class QmvDBConnectModel : public QStandardItemModel
 {
@@ -72,6 +73,8 @@ public:
     void addConnection();
     void deleteConnection( int row = -1);
     bool testConnection(int row);
+    QSqlDatabase dbConnection(int row);
+    QSqlDatabase dbConnection(const QString val, dbConnectAttribute att);
 
 private:
     QString settings_group, settings_array;
