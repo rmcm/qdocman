@@ -35,6 +35,7 @@ QmvDBConnectList::QmvDBConnectList()
     ui.setupUi(this);
     ui.treeView->setModel(connection_model);
     ui.treeView->setSelectionModel(selection_model);
+    setCurrentRow(0);
 }
 
 QmvDBConnectList::~QmvDBConnectList()
@@ -46,15 +47,24 @@ void QmvDBConnectList::on_pbAdd_clicked()
 {
     // qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
     connection_model->addConnection();
+    setCurrentRow(connection_model->rowCount() - 1);
+    //ui.pbEdit->setFocus();
+    on_pbEdit_clicked();
 }
 void QmvDBConnectList::on_pbDelete_clicked()
 {
     // qDebug() << "QmvDBConnectList::on_pbDelete_clicked()";
+    int row = selectedRow();
+    if (row < 0)
+        return;
     if (QMessageBox::warning(0, "Confirm Deletion",
-                             tr("Are you sure you want to delete this row ?"),
+                             tr("Are you sure you want to delete this row ?<BR>"
+                                "<BR>%1")
+                             .arg(connection_model->rowLabel(row)),
                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-        connection_model->deleteConnection(selectedRow());
+        connection_model->deleteConnection(row);
         connection_model->saveModel();
+        setCurrentRow(connection_model->rowCount() - 1);
     }
 }
 void QmvDBConnectList::on_pbEdit_clicked()
@@ -69,6 +79,7 @@ void QmvDBConnectList::on_pbEdit_clicked()
             connection_model->saveModel();
         }
     delete editor;
+    //ui.treeView->setFocus();
 }
 
 int QmvDBConnectList::selectedRow() const
@@ -85,7 +96,17 @@ int QmvDBConnectList::selectedRow() const
     return selected.first().row();
 }
 
-
+void QmvDBConnectList::setCurrentRow( int row )
+{
+    if (row < 0)
+        row = 0;
+    if (row > connection_model->rowCount() -1)
+        row = connection_model->rowCount() -1;
+    QModelIndex idx = connection_model->indexFromItem(connection_model->item(row, 0));
+    QItemSelectionModel::SelectionFlags flags
+        = QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows;
+    ui.treeView->selectionModel()->setCurrentIndex(idx, flags);
+}
 
 
 

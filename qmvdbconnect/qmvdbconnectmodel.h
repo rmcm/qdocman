@@ -73,6 +73,7 @@ public:
     void addConnection();
     void deleteConnection( int row = -1);
     bool testConnection(int row);
+    QString rowLabel(int row);
     QSqlDatabase dbConnection(int row);
     QSqlDatabase dbConnection(const QString val, dbConnectAttribute att);
 

@@ -147,6 +147,7 @@ void QmvDBConnectModel::addConnection()
     }
     invisibleRootItem()->appendRow(db);
     saveModel();
+
 }
 
 void QmvDBConnectModel::deleteConnection(int row)
@@ -209,4 +210,16 @@ QSqlDatabase QmvDBConnectModel::dbConnection(const QString dbval, dbConnectAttri
     }
     // Return invalid DB
     return QSqlDatabase::QSqlDatabase();
+}
+
+QString QmvDBConnectModel::rowLabel(int row)
+{
+    QString label;
+    if (row >= 0 && row < rowCount())
+        label = QString("%1 :: %2(%3:%4)")
+            .arg(item(row, DBLabel)->text())
+            .arg(item(row, DBName)->text())
+            .arg(item(row, DBHost)->text())
+            .arg(item(row, DBPort)->text());
+    return label;
 }

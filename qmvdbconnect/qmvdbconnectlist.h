@@ -38,6 +38,7 @@ private:
     Ui::QmvDBConnectListUI ui;
     QmvDBConnectModel * connection_model;
     int selectedRow() const;
+    void setCurrentRow( int row = 0 );
 
 private slots:
     void on_pbEdit_clicked();
