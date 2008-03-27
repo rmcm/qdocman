@@ -24,41 +24,26 @@
 #include <QtCore/QSettings>
 #include <QtCore/QHash>
 #include "ui_qmvdbconnectconf.h"
+#include "qmvdbconnectmodel.h"
 
 class QmvDBConnectConf : public QDialog {
 Q_OBJECT
 
 public:
-    QmvDBConnectConf(QWidget *parent = 0, const char * conn_name = 0);
+    QmvDBConnectConf(QWidget *parent, QmvDBConnectModel::DBConnectionPrefs prefs);
     ~QmvDBConnectConf();
 
+    QmvDBConnectModel::DBConnectionPrefs getPreferences();
+
 private:
-    struct Database {
-        int index;
-        QString label;
-        QString name;
-        QString host;
-        QString port;
-        QString user;
-        QString password;
-        QString options;
-    };
-    QHash<QString, Database *> connection_list;
-    void initDBList();
-    void loadConnectionSettings();
-    void storeConnectionSettings();
-    void addConnection( QString );
-    QSettings *settings;
     Ui::qmvdbconnectClass ui;
-    QString connection_label;
-    QString db_prefix;
+    QmvDBConnectModel::DBConnectionPrefs connect_prefs;
+    int connect_row;
     QPushButton *pb_apply, *pb_discard;
 
 private slots:
     void on_testButton_clicked();
     void on_exitControls_clicked(QAbstractButton * button);
-    void on_addConnection_clicked();
-    void on_remConnection_clicked();
 };
 
 #endif // QMVDBCONNECTCONF_H

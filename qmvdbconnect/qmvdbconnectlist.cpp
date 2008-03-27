@@ -22,97 +22,72 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
+#include <QtGui/QMessageBox>
+
 #include "qmvdbconnectlist.h"
+#include "qmvdbconnectconf.h"
 
 QmvDBConnectList::QmvDBConnectList()
-    : settings_group("databases"),
-      settings_array("db")
 {
-    qDebug() << "QmvDBConnectList Constructor";
-
-    // This must match enum dbConnectAttribute
-    dbAttTags = (QStringList()
-                 << "Label"
-                 << "Name"
-                 << "Host"
-                 << "Port"
-                 << "User"
-                 << "Password"
-                 << "Options");
-    dbAttDefs = (QStringList()
-                 << ""
-                 << ""
-                 << "localhost"
-                 << "5432"
-                 << ""
-                 << ""
-                 << "");
-    loadList();
-    saveList();
+    // qDebug() << "QmvDBConnectList Constructor";
+    connection_model = new QmvDBConnectModel();
+    QItemSelectionModel *selection_model = new QItemSelectionModel(connection_model);
+    ui.setupUi(this);
+    ui.treeView->setModel(connection_model);
+    ui.treeView->setSelectionModel(selection_model);
 }
 
 QmvDBConnectList::~QmvDBConnectList()
 {
-    qDebug() << "QmvDBConnectList Destructor";
+    // qDebug() << "QmvDBConnectList Destructor";
 }
 
-int QmvDBConnectList::loadList()
+void QmvDBConnectList::on_pbAdd_clicked()
 {
-    qDebug() << "QmvDBConnectList loadList";
-    QStandardItem *parentItem = invisibleRootItem();
-    QSettings settings;
-    settings.beginGroup(settings_group);
-    int count = settings.beginReadArray(settings_array);
-    qDebug("status=%d count=%d", settings.status(), count);
-    QList<QStandardItem *> db;
-
-    for ( int i = 0; i < count; i++ ) {
-        while (!db.isEmpty())
-            db.takeFirst();
-
-        settings.setArrayIndex(i);
-        for (int col = DBLabel; col < DBAttCount; col++ ) {
-            db << new QStandardItem(settings.value(dbAttTags.at(col),
-                                                   dbAttDefs.at(col)).toString());
+    // qDebug() << "QmvDBConnectList::on_pbAdd_clicked()";
+    connection_model->addConnection();
+}
+void QmvDBConnectList::on_pbDelete_clicked()
+{
+    // qDebug() << "QmvDBConnectList::on_pbDelete_clicked()";
+    if (QMessageBox::warning(0, "Confirm Deletion",
+                             tr("Are you sure you want to delete this row ?"),
+                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        connection_model->deleteConnection(selectedRow());
+        connection_model->saveModel();
+    }
+}
+void QmvDBConnectList::on_pbEdit_clicked()
+{
+    // qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    int row = selectedRow();
+    QmvDBConnectModel::DBConnectionPrefs prefs = connection_model->connectionPrefs(row);
+    QmvDBConnectConf *editor = new QmvDBConnectConf(this, prefs);
+    if (editor->exec() == QDialog::Accepted)
+        {
+            connection_model->setConnectionPrefs(row, editor->getPreferences());
+            connection_model->saveModel();
         }
-
-        parentItem->appendRow(db);
-        qDebug() << i << db.at(DBHost)->text() << db.at(DBName)->text();
-    }
-    settings.endArray();
-    // TODO: load other database settings here
-    settings.endGroup();
-    qDebug() << " >> loaded " << count << " rows. Model is " << rowCount() << "/" << columnCount();
-
-    return count;
+    delete editor;
 }
 
-
-int QmvDBConnectList::saveList()
+int QmvDBConnectList::selectedRow() const
 {
-    qDebug() << "QmvDBConnectList saveList";
-
-    QSettings settings;
-    settings.beginGroup(settings_group);
-    settings.beginWriteArray(settings_array);
-
-    int count = rowCount();
-    for (int row = 0; row < count; row++ ) {
-        settings.setArrayIndex(row);
-        for (int col = DBLabel; col < DBAttCount; col++ )
-            {
-                qDebug() << "  >> " << row << "/" << col;
-                if (!item(row, col))
-                    continue;
-                settings.setValue(dbAttTags.at(col), item(row, col)->text());
-                qDebug() << "saveList::" << item(row, col)->text();
-            }
+    // qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
+    QModelIndexList selected  = ui.treeView->selectionModel()->selectedRows();
+    if (selected.count() < 1) {
+        QMessageBox::warning(0, "Nothing selected",
+                             tr("No row has been selected<BR> ... please select a row to edit"),
+                             QMessageBox::Ok,0);
+        return -1;
     }
-    settings.endArray();
-    // TODO: save other database settings here
-    settings.endGroup();
-    return count;
+    // qDebug() << "rows selected = " << selected.first().row();
+    return selected.first().row();
 }
+
+
+
+
 
 
 

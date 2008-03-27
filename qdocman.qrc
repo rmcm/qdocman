@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/icons" >
+        <file>tango-icon-theme/32x32/status/network-transmit-receive.png</file>
+        <file>tango-icon-theme/32x32/status/network-offline.png</file>
         <file>tango-icon-theme/32x32/actions/document-open.png</file>
         <file>tango-icon-theme/32x32/actions/document-properties.png</file>
         <file>tango-icon-theme/32x32/actions/list-add.png</file>

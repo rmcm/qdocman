@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog" >
+ <class>QmvDBConnectListUI</class>
+ <widget class="QDialog" name="QmvDBConnectListUI" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -51,10 +51,13 @@
      <property name="icon" >
       <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/list-add.png</iconset>
      </property>
+     <property name="shortcut" >
+      <string>Alt+A</string>
+     </property>
     </widget>
    </item>
    <item row="2" column="1" >
-    <widget class="QPushButton" name="pbRemove" >
+    <widget class="QPushButton" name="pbDelete" >
      <property name="sizePolicy" >
       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
        <horstretch>0</horstretch>
@@ -75,6 +78,9 @@
      </property>
      <property name="icon" >
       <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/list-remove.png</iconset>
+     </property>
+     <property name="shortcut" >
+      <string>Alt+D</string>
      </property>
     </widget>
    </item>
@@ -100,6 +106,9 @@
      </property>
      <property name="icon" >
       <iconset resource="../qdocman.qrc" >:/icons/tango-icon-theme/32x32/actions/document-open.png</iconset>
+     </property>
+     <property name="shortcut" >
+      <string>Alt+E</string>
      </property>
     </widget>
    </item>
@@ -135,7 +144,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>QmvDBConnectListUI</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -151,7 +160,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>QmvDBConnectListUI</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
