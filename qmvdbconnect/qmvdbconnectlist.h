@@ -31,19 +31,20 @@ class QmvDBConnectList : public QDialog
     Q_OBJECT
 
 public:
-    QmvDBConnectList();
+    QmvDBConnectList( QmvDBConnectModel * model = 0);
     ~QmvDBConnectList();
 
 private:
     Ui::QmvDBConnectListUI ui;
     QmvDBConnectModel * connection_model;
-    int selectedRow() const;
+    int selectedRow( bool quiet = false ) const;
     void setCurrentRow( int row = 0 );
 
 private slots:
     void on_pbEdit_clicked();
     void on_pbDelete_clicked();
     void on_pbAdd_clicked();
+    void on_pbBookmark_clicked();
 };
 
 #endif // QMVDBCONNECTLIST_H

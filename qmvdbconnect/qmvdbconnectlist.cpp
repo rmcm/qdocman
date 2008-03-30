@@ -27,15 +27,19 @@
 #include "qmvdbconnectlist.h"
 #include "qmvdbconnectconf.h"
 
-QmvDBConnectList::QmvDBConnectList()
+QmvDBConnectList::QmvDBConnectList( QmvDBConnectModel * model )
+    : connection_model(model)
 {
     // qDebug() << "QmvDBConnectList Constructor";
-    connection_model = new QmvDBConnectModel();
+
+    if (!connection_model)
+        connection_model = new QmvDBConnectModel();
+    qDebug() << "QmvDBConnectionList:: model-rows = " << connection_model->rowCount();
     QItemSelectionModel *selection_model = new QItemSelectionModel(connection_model);
     ui.setupUi(this);
     ui.treeView->setModel(connection_model);
     ui.treeView->setSelectionModel(selection_model);
-    setCurrentRow(0);
+    //    setCurrentRow(connection_model->lastDBRow());
 }
 
 QmvDBConnectList::~QmvDBConnectList()
@@ -82,14 +86,24 @@ void QmvDBConnectList::on_pbEdit_clicked()
     //ui.treeView->setFocus();
 }
 
-int QmvDBConnectList::selectedRow() const
+void QmvDBConnectList::on_pbBookmark_clicked()
+{
+    // qDebug() << "QmvDBConnectList::on_pbBookmark_clicked()";
+    int row = selectedRow();
+    if (row < 0)
+        return;
+    connection_model->dbConnection(row);
+}
+
+int QmvDBConnectList::selectedRow( bool quiet ) const
 {
     // qDebug() << "QmvDBConnectList::on_pbEdit_clicked()";
     QModelIndexList selected  = ui.treeView->selectionModel()->selectedRows();
     if (selected.count() < 1) {
-        QMessageBox::warning(0, "Nothing selected",
-                             tr("No row has been selected<BR> ... please select a row to edit"),
-                             QMessageBox::Ok,0);
+        if (!quiet)
+            QMessageBox::warning(0, "Nothing selected",
+                                 tr("No row has been selected<BR> ... please select a current Database"),
+                                 QMessageBox::Ok,0);
         return -1;
     }
     // qDebug() << "rows selected = " << selected.first().row();
@@ -107,8 +121,3 @@ void QmvDBConnectList::setCurrentRow( int row )
         = QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows;
     ui.treeView->selectionModel()->setCurrentIndex(idx, flags);
 }
-
-
-
-
-

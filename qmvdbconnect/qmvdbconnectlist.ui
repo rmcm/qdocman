@@ -13,7 +13,7 @@
    <string>Database Connections</string>
   </property>
   <layout class="QGridLayout" >
-   <item row="0" column="0" colspan="5" >
+   <item row="0" column="0" colspan="6" >
     <widget class="QLabel" name="headingLabel" >
      <property name="font" >
       <font>
@@ -25,7 +25,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="5" >
+   <item row="1" column="0" colspan="6" >
     <widget class="QTreeView" name="treeView" />
    </item>
    <item row="2" column="0" >
@@ -113,6 +113,34 @@
     </widget>
    </item>
    <item row="2" column="3" >
+    <widget class="QPushButton" name="pbBookmark" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip" >
+      <string>Set the selected Database as default</string>
+     </property>
+     <property name="statusTip" >
+      <string>Set the selected Database as default</string>
+     </property>
+     <property name="whatsThis" >
+      <string>Set the selected Database as default</string>
+     </property>
+     <property name="text" >
+      <string/>
+     </property>
+     <property name="icon" >
+      <iconset resource="../qdocman.qrc" >:/icons/kde-icons/crystalsvg/32x32/actions/bookmark.png</iconset>
+     </property>
+     <property name="shortcut" >
+      <string>Alt+B</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4" >
     <spacer>
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
@@ -125,7 +153,7 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="4" >
+   <item row="2" column="5" >
     <widget class="QDialogButtonBox" name="buttonBox" >
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>

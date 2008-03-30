@@ -1,7 +1,10 @@
-# qmvdbconnect.pro ---
-# -*- C++ -*-
-# Copyright (C) 2008 Rex McMaster
-# Author: Rex McMaster rex@mcmaster.id.au
+# qmvpmi.pro ---
+# -*- Makefile -*-
+#
+# Copyright (C) 2008  Rex McMaster
+# 
+# Author: Rex McMaster source@compsoft.com.au
+# 
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -17,25 +20,19 @@
 # along with this program; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
+# 
 
 TEMPLATE = lib
-CONFIG  += debug
-TARGET = qmvdbconnect
-QT += core \
-    gui \
-    sql \
-    network
-HEADERS += qmvdbconnectmodel.h \
-	   qmvdbconnectlist.h \
-	   qmvdbconnectconf.h
-SOURCES += qmvdbconnectmodel.cpp \
-	   qmvdbconnectlist.cpp \
-	   qmvdbconnectconf.cpp
-FORMS += qmvdbconnectlist.ui \
-	 qmvdbconnectconf.ui
-RESOURCES += 
+TARGET = qmvpmi
+QT += core
+HEADERS += qmvpmi.h \
+	   qmvpmimodel.h
+SOURCES += qmvpmi.cpp \
+	   qmvpmimodel.cpp
+FORMS +=
+RESOURCES +=
 
-CONFIG    += staticlib
+CONFIG += staticlib
 CONFIG    += create_prl
 CONFIG    += link_prl
 
@@ -44,5 +41,4 @@ flymake.target  = check-syntax
 flymake.commands = gcc -o nul -S ${CHK_SOURCES} $(INCPATH)
 QMAKE_EXTRA_TARGETS += flymake
 
-
-# end qmvdbconnect.pro
+# end qmvpmi.pro

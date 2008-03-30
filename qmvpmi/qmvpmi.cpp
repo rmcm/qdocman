@@ -1,7 +1,10 @@
-// qmvdocman.h ---
+// qmvpmi.cpp ---
+// -*- C++ -*-
 //
-// Copyright (C) 2008 Rex McMaster
-// Author: Rex McMaster rex@mcmaster.id.au
+// Copyright (C) 2008  Rex McMaster
+//
+// Author: Rex McMaster source@compsoft.com.au
+//
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -17,35 +20,29 @@
 // along with this program; see the file COPYING.  If not, write to
 // the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 // Boston, MA 02110-1301, USA.
+//
 
+#include <QtCore/QDebug>
+#include "qmvpmi.h"
 
-#ifndef QMVDOCMAN_H
-#define QMVDOCMAN_H
-
-#include <QtGui/QMainWindow>
-#include "ui_qmvdocman.h"
-#include "../qmvdbconnect/qmvdbconnectlist.h"
-
-class qmvdocman : public QMainWindow
+QmvPMI::QmvPMI( QSqlDatabase db, QTreeView * treeview, QComboBox * query )
 {
-    Q_OBJECT
+    qDebug() << "QmvPMI Constructor";
 
-public:
-    qmvdocman(QWidget *parent = 0);
-    ~qmvdocman();
+    pmi_model = new QmvPMIModel(this, db);
+    QItemSelectionModel *selection_model = new QItemSelectionModel(pmi_model);
+    treeview->setModel(pmi_model);
+    treeview->setSelectionModel(selection_model);
+    setCurrentRow(0);
 
-private:
-    Ui::qmvdocmanClass ui;
-    QmvDBConnectModel * connection_model;
-    QSqlDatabase db_current;
+}
 
-private slots:
-    void on_actionPrint_activated();
-    void on_actionFax_activated();
-    void on_actionEmail_activated();
-    void on_actionPreferences_activated();
-};
+QmvPMI::~QmvPMI()
+{
+}
 
-#endif // QMVDOCMAN_H
-
-// end qmvdocman.h
+void QmvPMI::setCurrentRow(int row)
+{
+    ;
+}
+// end qmvpmi.cpp

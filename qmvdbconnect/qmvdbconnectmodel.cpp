@@ -27,8 +27,10 @@
 QmvDBConnectModel::QmvDBConnectModel()
     : settings_group("databases"),
       settings_array("db"),
-      available(":/icons/tango-icon-theme/32x32/status/network-transmit-receive.png"),
-      unavailable(":/icons/tango-icon-theme/32x32/status/network-offline.png")
+      available(":/icons/kde-icons/crystalsvg/32x32/actions/button_ok.png"),
+      unavailable(":/icons/kde-icons/crystalsvg/32x32/actions/button_cancel.png"),
+      bookmarked(":/icons/kde-icons/crystalsvg/32x32/actions/bookmark.png"),
+      last_db(-1)
 {
     // qDebug() << "QmvDBConnectModel Constructor";
 
@@ -39,15 +41,25 @@ QmvDBConnectModel::QmvDBConnectModel()
 QmvDBConnectModel::~QmvDBConnectModel()
 {
     // qDebug() << "QmvDBConnectModel Destructor";
-    for (int row = 0; row < rowCount(); row++)
-        deleteConnection(row);
+    clearModel();
+}
+
+void QmvDBConnectModel::clearModel()
+{
+    qDebug() << "clearModel:: rowCount=" << rowCount();
+    int row_count = rowCount();
+    for (int row = 0; row < row_count; row++)
+        deleteConnection(0); // delete from top
 }
 
 int QmvDBConnectModel::loadModel()
 {
     // qDebug() << "QmvDBConnectModel loadList";
+    clearModel();
+
     QStandardItem *parentItem = invisibleRootItem();
     QSettings settings;
+
     settings.beginGroup(settings_group);
     int count = settings.beginReadArray(settings_array);
     // qDebug("status=%d count=%d", settings.status(), count);
@@ -70,18 +82,24 @@ int QmvDBConnectModel::loadModel()
         if (db.at(DBLabel)->text().isEmpty())
             db.at(DBLabel)->setText(QString("Connect-%1").arg(row));
         parentItem->appendRow(db);
-        // qDebug() << row << db.at(DBHost)->text() << db.at(DBName)->text();
+        qDebug() << "loadModel::appendRow " << row << "/" << rowCount() << " "<< db.at(DBHost)->text() << db.at(DBName)->text();
         // check connection
         if (testConnection(row))
-            db.at(DBLabel)->setIcon(available);
+                db.at(DBLabel)->setIcon(available);
         else
             db.at(DBLabel)->setIcon(unavailable);
     }
     settings.endArray();
     // TODO: load other database settings here
+    last_db = settings.value(QString("LastDatabaseConnected")).toInt();
     settings.endGroup();
     // qDebug() << " >> loaded " << count << " rows. Model is " << rowCount() << "/" << columnCount();
+    if (last_db >= 0 and last_db < count)
+        item(last_db, DBLabel)->setIcon(bookmarked);
+    else
+        last_db = -1;
 
+    qDebug() << "Loaded " << count << " rows";
     return count;
 }
 
@@ -92,6 +110,7 @@ int QmvDBConnectModel::saveModel()
 
     QSettings settings;
     settings.beginGroup(settings_group);
+    settings.remove(settings_array);
     settings.beginWriteArray(settings_array);
 
     int count = rowCount();
@@ -103,12 +122,16 @@ int QmvDBConnectModel::saveModel()
                 if (!item(row, col))
                     continue;
                 settings.setValue(dbAttTags().at(col), item(row, col)->text());
-                // qDebug() << "saveList::" << item(row, col)->text();
+                qDebug() << "saveList::row=" << row << " - "<< item(row, col)->text();
             }
     }
     settings.endArray();
-    // TODO: save other database settings here
+
+    // save other database settings here
+    settings.setValue("LastDatabaseConnected", last_db);
     settings.endGroup();
+
+    qDebug() << "Saved " << count << " rows";
     return count;
 }
 
@@ -131,9 +154,12 @@ void QmvDBConnectModel::setConnectionPrefs( int row, DBConnectionPrefs prefs)
         for (int col = DBLabel; col < DBAttCount; col++) {
             item(row, col)->setText(prefs.at(col));
         }
-        if (testConnection(row))
-            item(row, DBLabel)->setIcon(available);
-        else
+        if (testConnection(row)) {
+            if (row == last_db)
+                item(row, DBLabel)->setIcon(bookmarked);
+            else
+                item(row, DBLabel)->setIcon(available);
+        } else
             item(row, DBLabel)->setIcon(unavailable);
     }
 }
@@ -152,9 +178,10 @@ void QmvDBConnectModel::addConnection()
 
 void QmvDBConnectModel::deleteConnection(int row)
 {
-    // qDebug() << "QmvDBConnectModel::deleteConnection() row=" << row;
+    qDebug() << "QmvDBConnectModel::deleteConnection() row=" << row;
     if (row >= 0 && row < rowCount()) {
         QList<QStandardItem *> items = takeRow(row);
+        qDebug() << "Deleting row/items=" << items;
         // delete the items (takeRow() only relinquishes item ownership
         while (!items.isEmpty())
             delete items.takeFirst();
@@ -176,6 +203,7 @@ bool QmvDBConnectModel::testConnection(int row)
                 db.setDatabaseName(item(row, DBName)->text());
                 db.setUserName(item(row,DBUser)->text());
                 db.setPassword(item(row,DBPassword)->text());
+                db.setConnectOptions(item(row,DBOptions)->text());
                 ok = db.open();
                 db.close();
                 // qDebug() << "testConnection status " << ok;
@@ -190,22 +218,53 @@ bool QmvDBConnectModel::testConnection(int row)
 
 QSqlDatabase QmvDBConnectModel::dbConnection(int row)
 {
+    qDebug() << "dbConnection(" << row << ")";
+
     // Invalid row
-    if (row < 0 || row >= rowCount())
-        return QSqlDatabase::QSqlDatabase();
+    Q_ASSERT_X(row >= 0 && row < rowCount(), "QmvDBConnectModel::dbConnection", "Invalid row");
+    //        return QSqlDatabase::QSqlDatabase();
 
     QString dblabel = item(row, DBLabel)->text();
+    QSqlDatabase db;
     // create if not detected
-    if (!QSqlDatabase::contains(dblabel))
-        QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", dblabel);
-    // open and return
-    return QSqlDatabase::database(dblabel);
+    if (!QSqlDatabase::contains(dblabel)) {
+        db = QSqlDatabase::addDatabase("QPSQL", dblabel);
+        db.setHostName(item(row, DBHost)->text());
+        db.setDatabaseName(item(row, DBName)->text());
+        db.setUserName(item(row,DBUser)->text());
+        db.setPassword(item(row,DBPassword)->text());
+        db.setConnectOptions(item(row,DBOptions)->text());
+    }
+
+    // open
+    db = QSqlDatabase::database(dblabel);
+
+    if (db.isValid()) {
+        // Remember last db connected
+        //        item(row, DBLabel)->setIcon(bookmarked);
+        last_db = row;
+        QSettings settings;
+        settings.beginGroup(settings_group);
+        settings.setValue("LastDatabaseConnected", last_db);
+        settings.endGroup();
+        loadModel();
+    }
+    return db;
+}
+
+QSqlDatabase QmvDBConnectModel::dbConnection()
+{
+    if (last_db >= 0 && last_db < rowCount())
+        return dbConnection(last_db);
+    return QSqlDatabase::database(); // null
 }
 
 QSqlDatabase QmvDBConnectModel::dbConnection(const QString dbval, dbConnectAttribute att)
 {
+    qDebug() << "dbConnection(" << dbval << ", " << att << ")";
     for (int row = 0; row <= rowCount(); row++) {
-        if (dbval.compare(item(row, att)->text()))
+        qDebug() << " row=" << row << " text=" << item(row, att)->text();
+        if (dbval == item(row, att)->text())
             return dbConnection(row);
     }
     // Return invalid DB

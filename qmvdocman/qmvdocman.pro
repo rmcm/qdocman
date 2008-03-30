@@ -22,7 +22,7 @@ TEMPLATE = app
 TARGET = qmvdocman 
 
 QT        += core gui 
-
+CONFIG    += debug
 HEADERS   += qmvdocman.h
 SOURCES   += main.cpp \
 	     qmvdocman.cpp
@@ -31,7 +31,8 @@ RESOURCES += ../qdocman.qrc
 
 INCLUDEPATH += 
 
-LIBS        += ../qmvdbconnect/libqmvdbconnect.a
+LIBS        += ../qmvdbconnect/libqmvdbconnect.a \
+	       ../qmvpmi/libqmvpmi.a
 
 ## extra target for flymake in emacs
 flymake.target  = check-syntax

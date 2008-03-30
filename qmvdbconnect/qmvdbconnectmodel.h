@@ -35,6 +35,7 @@ public:
     QmvDBConnectModel();
     ~QmvDBConnectModel();
     typedef QStringList DBConnectionPrefs;
+
     enum dbConnectAttribute {
         DBLabel = 0,
         DBName,
@@ -45,6 +46,7 @@ public:
         DBOptions,
         DBAttCount
     };
+
     static DBConnectionPrefs dbAttTags() {
         return DBConnectionPrefs()
             << "Label"
@@ -55,6 +57,7 @@ public:
             << "Password"
             << "Options";
     };
+
     static DBConnectionPrefs dbAttDefs() {
         return DBConnectionPrefs()
             << ""
@@ -66,6 +69,7 @@ public:
             << "";
     };
 
+    void clearModel();
     int loadModel();
     int saveModel();
     DBConnectionPrefs connectionPrefs( int row );
@@ -75,12 +79,14 @@ public:
     bool testConnection(int row);
     QString rowLabel(int row);
     QSqlDatabase dbConnection(int row);
-    QSqlDatabase dbConnection(const QString val, dbConnectAttribute att);
+    QSqlDatabase dbConnection();
+    QSqlDatabase dbConnection(const QString val, dbConnectAttribute att = DBName);
 
 private:
     QString settings_group, settings_array;
     DBConnectionPrefs dbAttVals;
-    QIcon available, unavailable;
+    QIcon available, unavailable, bookmarked;
+    int last_db;
 };
 
 #endif // QMVDBCONNECTMODEL_H
