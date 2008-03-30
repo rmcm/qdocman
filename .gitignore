@@ -2,6 +2,9 @@
 moc_*
 ui_*
 qrc_*
+*prl
+lib*.a
+lib*.so*
 *~
 Makefile*
 .cproject
